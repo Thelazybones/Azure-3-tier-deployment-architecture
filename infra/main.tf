@@ -2,13 +2,13 @@ provider "azurerm" {
   features {}
 }
 
-module "resourcegroup" {
+module "resource_group" {
   source         = "./modules/common/resource_group"
   name           = var.name
   location       = var.location
 }
 
-module "networking" {
+module "network" {
   source         = "./modules/networking"
   location       = module.resourcegroup.location_id
   resource_group = module.resourcegroup.resource_group_name
@@ -18,7 +18,7 @@ module "networking" {
   dbsubnetcidr   = var.dbsubnetcidr
 }
 
-module "securitygroup" {
+module "security_group" {
   source         = "./modules/securitygroup"
   location       = module.resourcegroup.location_id
   resource_group = module.resourcegroup.resource_group_name 
@@ -41,10 +41,25 @@ module "virtual_machine" {
   app_os_password = var.app_os_password
 }
 
+module "random_password"{
+  source ="./modules/common/password_generator"
+}
+
+module "secret_keyvault"{
+  source = "./modules/key_vault"
+  name = "server-kv"
+  resource_group = module.resourcegroup.resource_group_name
+  sku_name = "standard"
+
+  key_vault_secret = [
+    name = "sql-secret"
+    value = module.random_password.password
+  ]
+}
 module "sql_server" {
   source = "./modules/database"
   location = module.resourcegroup.location_id
-  resource_group = module.resourcegroup.resource_group_name
+  resource_group = module.resource_group.resource_group_name
   server_name = var.server_name
   server_version = var.server_version
   server_database_admin = var.server_database_admin

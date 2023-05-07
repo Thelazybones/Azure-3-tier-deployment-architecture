@@ -14,4 +14,3 @@ server_name = "server-database"
 server_database_admin = "sqladmin"
 server_database_password = "pa$$w0rd"
 server_version = "11.0"
-

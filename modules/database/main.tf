@@ -13,3 +13,4 @@ resource "azurerm_sql_database" "db" {
   location            = var.location
   server_name         = azurerm_sql_server.server.name
 }
+
