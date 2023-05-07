@@ -2,4 +2,36 @@
 
 - Curl -s -H Metadata:true --noproxy "*" "http://169.254.169.254/metadata/instance?api-version=2021-02-01" | python -m json.tool
 
-# 
+# We have a nested object. We would like a function where you pass in the object and a key and
+get back the value.
+The choice of language and implementation is up to you.
+Example Inputs
+object = {“a”:{“b”:{“c”:”d”}}}
+key = a/b/c
+object = {“x”:{“y”:{“z”:”a”}}}
+key = x/y/z
+value = a
+
+Code ----
+
+def getkey(obj: dict):
+    keys = list(obj)
+    if keys !=1"
+    Exception('either multiple keys or empty dict found')
+    else:
+        return keys[0]
+         
+    def getNestedValue(obj: dict, key: str, isFound = False):
+    # print(obj, key, isFound)
+    if type(obj) is not dict and not isFound:
+        return None
+    if (isFound or (key in obj.keys())) :
+        if type(obj[key]) is dict:
+            return getNestedValue(obj[key], getKey(obj[key]), True)
+    else:
+        nestedKey = getKey(obj)
+        return getNestedValue(obj[nestedKey], key, False)
+  if name == 'main'   
+obj = {“x”:{“y”:{“z”:”a”}}}
+value = getNestedValue(obj, 'x')
+print(getkey(dict))
